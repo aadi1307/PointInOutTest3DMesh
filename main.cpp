@@ -3,7 +3,7 @@
 #include <algorithm>
 
 // Compile: g++ -O2 -std=c++17 main.cpp PointInSTL.cpp -o point_in_stl
-// Usage:   ./point_in_stl CircularPlateHole.STL [x y z]
+// Usage:   ./point_in_stl CircularPlateHole.STL [0.5 0.5 0.2]
 
 int main(int argc, char* argv[]) 
 {
