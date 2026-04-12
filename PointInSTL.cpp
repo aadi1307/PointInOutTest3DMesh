@@ -99,10 +99,7 @@ Vec3 PointInSTL::computeNormal(const Triangle& tri)
     return { n.x/len, n.y/len, n.z/len };
 }
 
-/* Barycentric coordinates of point p relative to triangle
-   Correctly handles 3D: projects p onto triangle plane first,
-   then uses signed sub-areas (dot with main normal) so u, v can go negative
-   for points outside — that's what lets callers detect outside correctly */
+/* Barycentric coordinates of point p relative to triangle */
 Barycentric PointInSTL::barycentricCoords(Vec3 p, const Triangle& tri) 
 {
     Vec3 ab = sub(tri.a, tri.b);
@@ -124,7 +121,7 @@ Barycentric PointInSTL::barycentricCoords(Vec3 p, const Triangle& tri)
                   p.y - dist*unit_n.y,
                   p.z - dist*unit_n.z };
  
-    /*signed sub-triangle areas — dot each sub-normal with the main normal
+    /*signed sub-triangle areas dot each sub-normal with the main normal
     this preserves sign so u/v go negative when proj is outside the triangle*/
     Vec3 pb = sub(proj,  tri.b);
     Vec3 pc = sub(proj,  tri.c);
@@ -162,7 +159,7 @@ std::vector<Triangle> PointInSTL::readSTL(const std::string& path)
         float vb[3]; f.read((char*)vb, 12);
         float vc[3]; f.read((char*)vc, 12);
 
-        // widen float → double — all arithmetic stays in double from here on
+        // widen float -> double all arithmetic stays in double from here on
         tri.a = { va[0], va[1], va[2] };
         tri.b = { vb[0], vb[1], vb[2] };
         tri.c = { vc[0], vc[1], vc[2] };
