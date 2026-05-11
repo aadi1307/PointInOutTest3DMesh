@@ -80,10 +80,51 @@ std::vector<Triangle> PointInSTL::readSTL(const std::string& path)
     return out;
 }
 
-/* ---------------------------- ray casting --------------------------- */
+/* ---------------------------- ray casting ---------------------------
 
-/*citing:- Möller–Trumbore ray-triangle intersection algorithm
-Odd hits -> inside,  Even hits -> outside */
+citing:- Möller–Trumbore ray-triangle intersection algorithm
+Odd hits -> inside,  Even hits -> outside
+
+(Möller–Trumbore)
+ *  -----------------------------------
+ *  Does ray  P + t·D  cross triangle ABC?
+ *  Equating the ray and barycentric forms of the same point:
+ 
+ *      P + t·D  =  A + u·AB + v·AC
+ *    ⇒  -t·D + u·AB + v·AC  =  P - A  =  g
+ 
+ *  A 3x3 linear system   M · (t,u,v)^T = g   where
+ *      M = [ -D | AB | AC ]   (columns are the three vectors)
+ *      g = P - A              (displacement from A to the query point)
+ 
+ *  Solved by Cramer's rule — every unknown is a ratio of two scalar
+ *  triple products (signed parallelepiped volumes).
+ 
+ 
+ *  ANALYTICAL STEPS
+ *  ----------------
+ *   1. ab, ac          edge vectors of the triangle (A→B, A→C)
+ 
+ *   2. h   = ray × ac  normal to the ray–AC plane
+ *      det = ab · h    = det(M);  |det| = parallelepiped volume
+ *                        ≈ 0 means ray ∥ triangle plane  →  skip
+ *   cramers rule solving for small linear system Mx = b
+ *   3. inv = 1 / det   precomputed so Cramer's 3 divides become 3 multiplies
+ *      g   = P - A     right-hand side of the linear system
+ 
+ *   4. Cramer's rule  (each unknown = ratio of two determinants):
+ *         det[a,b,c]=a⋅(b×c)
+ *         u = (g · h)         * inv    barycentric weight on AB
+ *         v = (ray · (g×ab))  * inv    barycentric weight on AC
+ *         t = (ac · (g×ab))   * inv    distance from P along the ray
+ 
+ *  ACCEPT a hit only when:
+ *      u ≥ 0,  v ≥ 0,  u + v ≤ 1     (hit lies INSIDE the triangle,
+ *                                     not just on its infinite plane)
+ *      t > 0                         (triangle is in front of P, not behind)
+
+ *  Final answer:  hits % 2 == 1   ⇒   P is INSIDE the mesh.
+ * ==================================================================== */
 bool PointInSTL::rayCasting(Point point, const std::vector<Triangle>& mesh) 
 {
     Vec3 ray = {1.0, 1e-4, 1e-4};         // direction vector — not a position
