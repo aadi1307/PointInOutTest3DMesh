@@ -89,8 +89,9 @@ bool PointInSTL::rayCasting(Point point, const std::vector<Triangle>& mesh)
     Vec3 ray = {1.0, 1e-4, 1e-4};         // direction vector — not a position
     int  hits = 0;
 
-    for (const auto& tri : mesh) 
+    for (int i = 0; i < (int)mesh.size(); i++)
     {
+        const Triangle& tri = mesh[i];
         Vec3 ab = sub(tri.a, tri.b);            // edge vector A→B
         Vec3 ac = sub(tri.a, tri.c);            // edge vector A→C
 

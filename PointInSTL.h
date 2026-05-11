@@ -15,7 +15,7 @@ struct Triangle
     Point a, b, c;
 };
 
-struct Vec3        // direction / displacement — NOT a position
+struct Vec3        // direction / displacement
 {
     double x, y, z;
 };
