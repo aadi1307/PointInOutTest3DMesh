@@ -15,18 +15,11 @@ int main(int argc, char* argv[])
     PointInSTL geom(argv[1]);
     std::cout << "Loaded " << geom.triangleCount() << " triangles\n";
 
-    Vec3 lo, hi;
-    geom.boundingBox(lo, hi);
-    std::cout << "BBox min: (" << lo.x << ", " << lo.y << ", " << lo.z << ")\n";
-    std::cout << "BBox max: (" << hi.x << ", " << hi.y << ", " << hi.z << ")\n";
-    std::cout << "Center:   (" << (lo.x+hi.x)/2 << ", " << (lo.y+hi.y)/2
-              << ", " << (lo.z+hi.z)/2 << ")\n";
-
     if (argc == 5) {
         try {
-            Vec3 point = { std::stod(argv[2]),
+            Point point = { std::stod(argv[2]),
                            std::stod(argv[3]),
-                           std::stod(argv[4]) };
+                           std::stod(argv[4]) };  // position in 3D space
 
             std::cout << (geom.isInside(point) ? "INSIDE" : "OUTSIDE") << "\n";
 
