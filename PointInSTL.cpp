@@ -104,7 +104,9 @@ Odd hits -> inside,  Even hits -> outside
  *  ANALYTICAL STEPS
  *  ----------------
  *   1. ab, ac          edge vectors of the triangle (A→B, A→C)
- 
+  Mx = b
+  
+  x {t u v}
  *   2. h   = ray × ac  normal to the ray–AC plane
  *      det = ab · h    = det(M);  |det| = parallelepiped volume
  *                        ≈ 0 means ray ∥ triangle plane  →  skip
