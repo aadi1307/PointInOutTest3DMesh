@@ -90,7 +90,7 @@ Odd hits -> inside,  Even hits -> outside
  *  Does ray  P + t·D  cross triangle ABC?
  *  Equating the ray and barycentric forms of the same point:
  
- *      P + t·D  =  A + u·AB + v·AC
+ *      P + t·D  =  A + u·AB + v·AC.
  *    ⇒  -t·D + u·AB + v·AC  =  P - A  =  g
  
  *  A 3x3 linear system   M · (t,u,v)^T = g   where
@@ -131,6 +131,8 @@ bool PointInSTL::rayCasting(Point point, const std::vector<Triangle>& mesh)
 {
     Vec3 ray = {1.0, 1e-4, 1e-4};         // direction vector — not a position
     int  hits = 0;
+
+    
 
     for (int i = 0; i < (int)mesh.size(); i++)
     {
